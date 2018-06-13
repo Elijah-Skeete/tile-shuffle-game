@@ -1,0 +1,358 @@
+var idName = "tile";
+
+counter = 0;
+
+var cells = document.getElementsByTagName("div");
+
+var original = [];
+
+var divs = document.getElementsByTagName("div");
+
+//var num_moves;
+//var isCompleted = false;
+var time=0;
+//var blankId = "tile16";
+//var bg = "nba.png";
+
+
+function changeBackground(){
+var bodyimage = document.form1.body.value;
+ document.getElementById("bg").style.backgroundImage = "url('nfl.png')"; 
+ //document.body.style.backgroundImage = ;
+}
+
+window.addEventListener("load", startTimer, false);
+
+function startTimer()
+{
+    window.setInterval("updateTime()", 1000);
+} 
+
+function updateTime()
+{ 
+    ++time;
+    document.getElementById("time").innerHTML ="Time spent in current game: " +time +" (seconds)";
+} 
+
+for (var i=0; i<divs.length; i++){
+
+	original.push(divs[i].id);
+
+}
+function myStopFunction() {
+    clearTimeout(time);
+}
+
+
+function swap_tiles_down(clicked_id) { //3 more functions: up down left right
+	var temp = cells[clicked_id].id;
+	var text = cells[clicked_id].innerHTML;
+
+	cells[clicked_id].innerHTML = cells[clicked_id+1].innerHTML;
+	cells[clicked_id+1].innerHTML = text;
+	cells[clicked_id].id = cells[clicked_id+1].id;
+	cells[clicked_id+1].id = temp;
+	checkWon(document.getElementsByTagName("div"));
+}
+
+function swap_tiles_up(clicked_id) { //3 more functions: up down left right
+
+
+
+	var temp = cells[clicked_id].id;
+
+	var text = cells[clicked_id].innerHTML;
+
+
+
+	cells[clicked_id].innerHTML = cells[clicked_id-1].innerHTML;
+
+	cells[clicked_id-1].innerHTML = text;
+
+	cells[clicked_id].id = cells[clicked_id-1].id;
+
+	cells[clicked_id-1].id = temp;
+
+
+
+	checkWon(document.getElementsByTagName("div"));
+
+
+
+}
+
+
+
+function swap_tiles_right(clicked_id) { //3 more functions: up down left right
+
+
+
+	var temp = cells[clicked_id].id;
+
+	var text = cells[clicked_id].innerHTML;
+
+
+
+	cells[clicked_id].innerHTML = cells[clicked_id+4].innerHTML;
+
+	cells[clicked_id+4].innerHTML = text;
+
+	cells[clicked_id].id = cells[clicked_id+4].id;
+
+	cells[clicked_id+4].id = temp;
+
+
+
+	checkWon(document.getElementsByTagName("div"));
+
+
+
+}
+
+
+
+function swap_tiles_left(clicked_id) { //3 more functions: up down left right
+
+
+
+	var temp = cells[clicked_id].id;
+
+	var text = cells[clicked_id].innerHTML;
+
+
+
+	cells[clicked_id].innerHTML = cells[clicked_id-4].innerHTML;
+
+	cells[clicked_id-4].innerHTML = text;
+
+	cells[clicked_id].id = cells[clicked_id-4].id;
+
+	cells[clicked_id-4].id = temp;
+
+
+
+	checkWon(document.getElementsByTagName("div"));
+
+
+
+}
+
+
+
+function myfunction(clicked_id) {
+	if (clicked_id <= 14 && cells[clicked_id+1].id == "tile16")  {
+		swap_tiles_down(clicked_id)
+		counter ++;
+	} else if (clicked_id <= 11 && cells[clicked_id+4].id == "tile16") {
+		swap_tiles_right(clicked_id)
+		counter ++;
+	} else if (cells[clicked_id-1].id == "tile16") {
+		swap_tiles_up(clicked_id)
+		counter ++;
+	} else if (cells[clicked_id-4].id == "tile16") {
+		swap_tiles_left(clicked_id)
+		counter ++;
+	}
+  document.getElementById("p1").innerHTML = "Number of moves so far: " + counter;
+}
+
+
+
+function shuffleArray(array1, array2) {
+
+    for (var i = array1.length - 1; i > 0; i--) {
+
+        var j = Math.floor(Math.random() * (i + 1));
+
+        var temp = array1[i];
+
+        var text = array2[i];
+
+        array1[i] = array1[j];
+
+        array2[i] = array2[j];
+
+        array1[j] = temp;
+
+        array2[j] = text;
+
+        array1[j].innerHTML = array2[j];
+
+    }
+
+    return array1;
+
+}
+
+
+
+function shuffleTiles(){
+	document.getElementById("congrats").style.display = 'none';
+	var idArray = [];
+	var textArray = [];
+
+	for (var i=0; i<cells.length; i++){
+		idArray.push(cells[i].id);
+		textArray.push(cells[i].innerHTML);
+	}
+
+	idArray = shuffleArray(idArray, textArray);
+
+	for (var i = 0; i < idArray.length; i++) {
+		cells[i].id = idArray[i];
+	}
+
+	for (var i = 0; i < textArray.length; i++) {
+		cells[i].innerHTML = textArray[i];
+	}
+
+}
+
+
+
+function arraysEqual(arr1, arr2) {
+
+
+
+    if(arr1.length !== arr2.length) {
+
+        return false;
+
+    }
+
+
+
+    for(var i = arr1.length; i>0;  i--) {
+
+        if(arr1[i] !== arr2[i]) {
+
+            return false;
+
+        }
+
+    }
+
+    return true;
+
+}
+
+
+
+function checkWon(array){
+
+	document.getElementById("congrats").style.display = 'none';
+	var checker = [];
+
+	for (var i=0; i<array.length; i++){
+		checker.push(array[i].id);
+	}
+
+	if (arraysEqual(original, checker)){
+		 alert ("Thats it mate!!!");
+		 document.getElementById("congrats").style.display = 'inline-block';
+	}
+}
+
+
+
+/* 
+
+Attempt at Animation
+
+
+
+function(){
+
+
+
+
+	addEventListener('click', function(e){
+		if(state == 1){
+			// Enables sliding animation
+			className = 'animate';
+			shiftCell(e.target);
+		}
+	});
+
+
+
+for (var i=0; i<divs.length; i++){
+
+	original.push(divs[i].id);
+
+}
+
+
+	function getAdjacentCells(cell){
+		
+		var id = cell.id.split('-');
+		
+		// Gets cell position indexes
+		var row = parseInt(id[1]);
+		var col = parseInt(id[2]);
+		
+		var adjacent = [];
+		
+		// Gets all possible adjacent cells
+		if(row < 3){adjacent.push(getCell(row+1, col));}			
+		if(row > 0){adjacent.push(getCell(row-1, col));}
+		if(col < 3){adjacent.push(getCell(row, col+1));}
+		if(col > 0){adjacent.push(getCell(row, col-1));}
+		
+		return adjacent;
+		
+	}
+	
+
+
+
+
+	function getEmptyAdjacentCell(cell){
+		
+		// Gets all adjacent cells
+		var adjacent = getAdjacentCells(cell);
+		
+		// Searches for empty cell
+		for(var i = 0; i < adjacent.length; i++){
+			if(adjacent[i].className == "tile16"){
+				return adjacent[i];
+			}
+		}
+		
+		// Empty adjacent cell was not found
+		return false;
+		
+	}
+
+
+	function shiftCell(cell){
+		
+		// Checks if selected cell has number
+		if(cell.clasName != "tile16"){
+			
+			// Tries to get empty adjacent cell
+			var emptyCell = getEmptyAdjacentCell(cell);
+			
+			if(emptyCell){
+				// Temporary data
+				var tmp = {style: cell.style.cssText, id: cell.id};
+				
+				// Exchanges id and style values
+				cell.style.cssText = emptyCell.style.cssText;
+				cell.id = emptyCell.id;
+				emptyCell.style.cssText = tmp.style;
+				emptyCell.id = tmp.id;
+				
+				if(state == 1){
+					// Checks the order of numbers
+					checkOrder();
+				}
+			}
+		}
+		
+	}
+*/
+
+
+
+
